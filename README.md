@@ -1,14 +1,7 @@
 # collection_diff_isolate
 
-A new Flutter package project.
+[![pub package](https://img.shields.io/pub/v/collection_diff_isolate.svg)](https://pub.dartlang.org/packages/collection_diff_isolate)
+[![Coverage Status](https://coveralls.io/repos/github/SunnyApp/collection_diff_isolate/badge.svg?branch=master)](https://coveralls.io/github/SunnyApp/collection_diff_isolate?branch=master)
 
-## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+An extension of the [collection_diff] package that provides asynchronous support using isolate. 

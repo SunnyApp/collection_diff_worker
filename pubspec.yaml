@@ -1,8 +1,7 @@
 name: collection_diff_isolate
-description: A new Flutter package project.
-version: 0.0.1
-author:
-homepage:
+description: An extension of the collection_diff library that allows the diffs to be performed asynchronously without blocking the main UI thread
+version: 0.4.4
+homepage: https://github.com/SunnyApp/collection_diff_isolate
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -10,11 +9,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  uuid: ^2.0.4
+  collection: ^1.14.11
+  logging: ^0.11.3+2
+  
   collection_diff:
     path: ../collection_diff
-  isolate: any
+
+  logging_config:
+    path: ../logging_config
   isolate_service:
     path: ../isolate_service
+
 
 dev_dependencies:
   flutter_test:

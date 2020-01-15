@@ -4,8 +4,8 @@ IsolateService _diffRunner;
 
 IsolateService get diffRunner {
   return _diffRunner ??= initializeDiffRunner((config) => config
-    ..poolSize = 2
-    ..defaultTimeout = Duration(seconds: 10)
+    ..poolSize = 5
+    ..defaultTimeout = Duration(seconds: 60)
     ..failOnError = false
     ..autoclose = true
     ..debugName = "diffRunner");

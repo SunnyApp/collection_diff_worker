@@ -82,12 +82,12 @@ packages:
     source: hosted
     version: "2.1.4"
   isolate:
-    dependency: "direct main"
+    dependency: transitive
     description:
-      name: isolate
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2"
+      path: "../isolate"
+      relative: true
+    source: path
+    version: "2.0.3"
   isolate_service:
     dependency: "direct main"
     description:
@@ -95,6 +95,20 @@ packages:
       relative: true
     source: path
     version: "0.4.5"
+  logging:
+    dependency: "direct main"
+    description:
+      name: logging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.11.3+2"
+  logging_config:
+    dependency: "direct main"
+    description:
+      path: "../logging_config"
+      relative: true
+    source: path
+    version: "0.4.4"
   matcher:
     dependency: transitive
     description:
@@ -191,6 +205,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+  uuid:
+    dependency: "direct main"
+    description:
+      name: uuid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.4"
   vector_math:
     dependency: transitive
     description:
@@ -206,4 +227,4 @@ packages:
     source: hosted
     version: "3.5.0"
 sdks:
-  dart: ">=2.6.0 <3.0.0"
+  dart: ">=2.7.0 <3.0.0"
