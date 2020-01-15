@@ -16,10 +16,8 @@ dependencies:
   collection_diff:
     path: ../collection_diff
 
-  logging_config:
-    path: ../logging_config
-  isolate_service:
-    path: ../isolate_service
+  logging_config: ^0.4.5
+  isolate_service: ^0.4.6
 
 
 dev_dependencies:
