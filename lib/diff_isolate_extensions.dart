@@ -164,6 +164,9 @@ extension ListDiffsExtensions on ListDiffs {
     // Create a mapping of diffKey to replacement
     final reverseMapping = Map.fromEntries(delegateArgs.replacement.map((d) => MapEntry(d.diffKey, d as E)));
 
+    if(this.operations == null) {
+      throw "BAD BAD $args";
+    }
     return ListDiffs<E>.ofOperations(
         this.operations.map((final op) {
           if (op is DeleteDiff) {
