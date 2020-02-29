@@ -29,6 +29,9 @@ extension ListDiffAsyncExtensions<E> on List<E> {
         );
         final context = ListDiffContext<DiffDelegate>(algorithm, arguments, debugName: "$debugName (delegate)");
         final diff = await _runAsync(executeListDiff, context, name: name);
+        if (diff == null) {
+          return ListDiffs<E>.empty();
+        }
         final undelegated = diff.undelegate<E>(originalArgs);
         return undelegated;
       } else {
@@ -51,9 +54,7 @@ extension ListDiffAsyncExtensions<E> on List<E> {
 
 Future<O> _runAsync<I, O>(O fn(I input), I input, {String name}) {
   _log.finer("Isolate input: ${input?.runtimeType} $input");
-  return Future.sync(() => diffRunner.run(fn, input, name: name)).catchError((err) {
-    _log.severe("###  ERROR: $err", err);
-  });
+  return Future.sync(() => diffRunner.run(fn, input, name: name));
 }
 
 extension SetDiffAsyncExtensions<E> on Set<E> {
@@ -160,11 +161,15 @@ extension ListDiffsExtensions on ListDiffs {
   /// passed a safe delegate.  When the method returns, we need to rehydrate the results by looking the delegates up
   /// in a map.
   ListDiffs<E> undelegate<E>(ListDiffArguments<E> args) {
+    if (this == null) {
+      _log.warning("Got a null listDiffs<$E>");
+      return ListDiffs.empty(args);
+    }
     final delegateArgs = args as ListDiffArguments<DiffDelegate>;
     // Create a mapping of diffKey to replacement
     final reverseMapping = Map.fromEntries(delegateArgs.replacement.map((d) => MapEntry(d.diffKey, d as E)));
 
-    if(this.operations == null) {
+    if (this.operations == null) {
       throw "BAD BAD $args";
     }
     return ListDiffs<E>.ofOperations(
@@ -292,6 +297,7 @@ class SetDiffContext<E> {
   final String debugName;
 
   String get id => arguments.id;
+
   SetDiffContext(this.algorithm, this.arguments, {this.debugName});
 
   @override
@@ -311,6 +317,7 @@ class MapDiffContext<K, V> {
   String get id => arguments.id;
 
   const MapDiffContext(this.algorithm, this.arguments, {this.debugName, this.isTimed = false});
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) || other is SetDiffContext && runtimeType == other.runtimeType && id == other.id;
