@@ -87,14 +87,14 @@ packages:
       name: isolate
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.3"
   isolate_service:
     dependency: "direct main"
     description:
       name: isolate_service
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.6"
+    version: "0.4.7"
   logging:
     dependency: "direct main"
     description:
