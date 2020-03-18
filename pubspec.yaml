@@ -14,8 +14,10 @@ dependencies:
   logging: ^0.11.3+2
   collection_diff:
     path: ../collection_diff
-  logging_config: ^0.4.5
-  isolate_service: ^0.4.7
+  logging_config:
+    path: ../logging_config
+  isolate_service:
+    path: ../isolate_service
 
 dev_dependencies:
   flutter_test:

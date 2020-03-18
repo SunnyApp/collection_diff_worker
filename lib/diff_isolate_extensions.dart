@@ -6,6 +6,7 @@ import 'package:collection_diff/diff_algorithm.dart';
 import 'package:collection_diff/list_diff_model.dart';
 import 'package:collection_diff/map_diff.dart';
 import 'package:collection_diff_isolate/diff_isolate.dart';
+import 'package:isolate_service/isolate_service.dart';
 import 'package:logging/logging.dart';
 
 final _log = Logger("asyncDiff");
@@ -18,8 +19,8 @@ extension ListDiffAsyncExtensions<E> on List<E> {
     try {
       algorithm ??= const MyersDiff();
       final originalArgs = ListDiffArguments<E>.copied(this, other, equality);
-      final name = "${Isolate.current.debugName}: listDiff[${debugName ?? "-"}]";
-      if (Isolate.current.isMain && this is Iterable<DiffDelegate>) {
+      final name = "$currentIsolateName: listDiff[${debugName ?? "-"}]";
+      if (isMainIsolate && this is Iterable<DiffDelegate>) {
         final arguments = ListDiffArguments<DiffDelegate>.copied(
           this.map((s) => (s as DiffDelegate).delegate),
           other.map((s) => (s as DiffDelegate).delegate),
@@ -37,8 +38,8 @@ extension ListDiffAsyncExtensions<E> on List<E> {
       } else {
         final arguments = ListDiffArguments<E>.copied(this, other, equality);
         final context = ListDiffContext<E>(algorithm, arguments, debugName: debugName);
-        if (Isolate.current.isNotMain) {
-          _log.info("Running $debugName in ${Isolate.current.debugName}:");
+        if (!isMainIsolate) {
+          _log.info("Running $debugName in $currentIsolateName:");
           return executeListDiff(context);
         } else {
           final diff = await _runAsync(executeListDiff, context, name: name);
@@ -64,9 +65,9 @@ extension SetDiffAsyncExtensions<E> on Set<E> {
       algorithm ??= const DefaultSetDiffAlgorithm();
       final arguments = SetDiffArguments<E>.copied(this, other, checkEquality, equality);
       final context = SetDiffContext<E>(algorithm, arguments, debugName: debugName);
-      final name = "${Isolate.current.debugName}: setDiff[${debugName ?? "-"}]";
+      final name = "$currentIsolateName: setDiff[${debugName ?? "-"}]";
 
-      if (Isolate.current.isMain && this is Iterable<DiffDelegate>) {
+      if (isMainIsolate && this is Iterable<DiffDelegate>) {
         final delegateArgs = SetDiffArguments<DiffDelegate>.copied(this.map((s) => (s as DiffDelegate).delegate),
             other.map((s) => (s as DiffDelegate).delegate), true, DiffEquality.ofDiffDelegate());
         final context = SetDiffContext<DiffDelegate>(algorithm, delegateArgs, debugName: "$debugName (delegate)");
@@ -97,7 +98,7 @@ extension MapDiffAsyncExtensions<K, V> on Map<K, V> {
       final args = MapDiffArguments<K, V>.copied(this, other,
           checkValues: checkValues ?? true, keyEquality: keyEquality, valueEquality: valueEquality);
       final context = MapDiffContext(algorithm, args, isTimed: true, debugName: debugName);
-      final name = "${Isolate.current.debugName}: setDiff[${debugName ?? "-"}]";
+      final name = "$currentIsolateName: setDiff[${debugName ?? "-"}]";
 
       if (this is Map<K, DiffDelegate>) {
         final delegateArgs = MapDiffArguments<K, DiffDelegate>.copied(
@@ -111,7 +112,7 @@ extension MapDiffAsyncExtensions<K, V> on Map<K, V> {
         final diff = await _runAsync(executeMapDiff, context, name: name);
         return diff.undelegate<K, V>(args);
       } else {
-        if (Isolate.current.isNotMain) {
+        if (!isMainIsolate) {
           return executeMapDiff(context);
         } else {
           final diff = await _runAsync(executeMapDiff, context, name: name);
@@ -370,7 +371,7 @@ SetDiffs<E> executeSetDiff<E>(SetDiffContext<E> context) {
 
 _logResult(String type, String name, int origLength, int replLength, int resultLength, DateTime start) {
   _log.info({
-    Isolate.current.debugName: "$type[${name ?? "-"}]",
+    currentIsolateName: "$type[${name ?? "-"}]",
     'orig': origLength,
     'repl': replLength,
     'diffs': resultLength,
