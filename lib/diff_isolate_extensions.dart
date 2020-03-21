@@ -15,7 +15,7 @@ int i = 0;
 
 extension ListDiffAsyncExtensions<E> on List<E> {
   Future<ListDiffs<E>> differencesAsync(List<E> other,
-      {String debugName, DiffEquality<E> equality, ListDiffAlgorithm algorithm}) async {
+      {String debugName, DiffEquality equality, ListDiffAlgorithm algorithm}) async {
     try {
       algorithm ??= const MyersDiff();
       final originalArgs = ListDiffArguments<E>.copied(this, other, equality);
@@ -60,7 +60,7 @@ Future<O> _runAsync<I, O>(O fn(I input), I input, {String name}) {
 
 extension SetDiffAsyncExtensions<E> on Set<E> {
   Future<SetDiffs<E>> differencesAsync(Set<E> other,
-      {bool checkEquality = true, String debugName, DiffEquality<E> equality, SetDiffAlgorithm algorithm}) async {
+      {bool checkEquality = true, String debugName, DiffEquality equality, SetDiffAlgorithm algorithm}) async {
     try {
       algorithm ??= const DefaultSetDiffAlgorithm();
       final arguments = SetDiffArguments<E>.copied(this, other, checkEquality, equality);
@@ -89,8 +89,8 @@ extension MapDiffAsyncExtensions<K, V> on Map<K, V> {
     Map<K, V> other, {
     bool checkValues = true,
     String debugName,
-    DiffEquality<K> keyEquality,
-    DiffEquality<V> valueEquality,
+    DiffEquality keyEquality,
+    DiffEquality valueEquality,
     MapDiffAlgorithm algorithm,
   }) async {
     try {
@@ -128,13 +128,13 @@ extension MapDiffAsyncExtensions<K, V> on Map<K, V> {
 
 extension IterableDiffAsyncExtensions<E> on Iterable<E> {
   Future<SetDiffs<E>> differencesAsSetAsync(Iterable<E> other,
-      {String debugName, DiffEquality<E> equality, SetDiffAlgorithm algorithm}) async {
+      {String debugName, DiffEquality equality, SetDiffAlgorithm algorithm}) async {
     final asSet = this.toSet();
     return await asSet.differencesAsync(other.toSet(), debugName: debugName, equality: equality, algorithm: algorithm);
   }
 
   Future<ListDiffs<E>> differencesAsListAsync(Iterable<E> other,
-      {String debugName, DiffEquality<E> equality, ListDiffAlgorithm algorithm}) async {
+      {String debugName, DiffEquality equality, ListDiffAlgorithm algorithm}) async {
     return await this
         .toList()
         .differencesAsync(other.toList(), debugName: debugName, equality: equality, algorithm: algorithm);
