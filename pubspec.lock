@@ -37,7 +37,7 @@ packages:
     source: hosted
     version: "1.1.2"
   collection:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: collection
       url: "https://pub.dartlang.org"
@@ -46,10 +46,10 @@ packages:
   collection_diff:
     dependency: "direct main"
     description:
-      path: "../collection_diff"
-      relative: true
-    source: path
-    version: "0.4.4"
+      name: collection_diff
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   convert:
     dependency: transitive
     description:
@@ -88,27 +88,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  isolate_service:
-    dependency: "direct main"
+  js:
+    dependency: transitive
     description:
-      path: "../isolate_service"
-      relative: true
-    source: path
-    version: "0.4.7"
+      name: js
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.1+1"
   logging:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: logging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.3+2"
+    version: "0.11.4"
   logging_config:
     dependency: "direct main"
     description:
-      path: "../logging_config"
-      relative: true
-    source: path
-    version: "0.4.5"
+      name: logging_config
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.7"
   matcher:
     dependency: transitive
     description:
@@ -131,7 +131,7 @@ packages:
     source: hosted
     version: "1.6.4"
   pedantic:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pedantic
       url: "https://pub.dartlang.org"
@@ -197,7 +197,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.11"
+    version: "0.2.15"
   typed_data:
     dependency: transitive
     description:
@@ -219,6 +219,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
+  worker_service:
+    dependency: "direct main"
+    description:
+      name: worker_service
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.2"
   xml:
     dependency: transitive
     description:
