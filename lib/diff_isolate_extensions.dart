@@ -1,12 +1,10 @@
-import 'dart:isolate';
-
 import 'package:collection_diff/algorithms/set_diff.dart';
 import 'package:collection_diff/collection_diff.dart';
 import 'package:collection_diff/diff_algorithm.dart';
 import 'package:collection_diff/list_diff_model.dart';
 import 'package:collection_diff/map_diff.dart';
 import 'package:logging/logging.dart';
-import 'package:worker_service/worker_service_isolate.dart';
+import 'package:worker_service/worker_service.dart';
 
 import 'diff_worker.dart';
 
@@ -436,15 +434,15 @@ _logResult(String type, String name, int origLength, int replLength,
   });
 }
 
-extension IsolateExtension on Isolate {
-  bool get isNotMain {
-    return debugName != "main";
-  }
-
-  bool get isMain {
-    return debugName == "main";
-  }
-}
+//extension IsolateExtension on Isolate {
+//  bool get isNotMain {
+//    return debugName != "main";
+//  }
+//
+//  bool get isMain {
+//    return debugName == "main";
+//  }
+//}
 
 extension _EntryDiffExtensions<K, V> on Iterable<MapEntry<K, V>> {
   Map<K, V> toMap() {
