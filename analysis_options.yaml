@@ -1,48 +1,42 @@
 include: package:pedantic/analysis_options.yaml
 
-# COPIED FROM FLUTTER https://github.com/flutter/flutter/blob/master/analysis_options.yaml
-
 analyzer:
   exclude:
     - "bin/cache/**"
-      # the following two are relative to the stocks example and the flutter package respectively
+    # the following two are relative to the stocks example and the flutter package respectively
     # see https://github.com/dart-lang/sdk/issues/28463
     - "lib/l10n/*.p.dart"
-    - "lib/src/http/**"
     - ".idea/"
-    - "lib/ext/*.dart"
-    - "lib/ext/**"
+    - ".direnv/**/*.dart"
+    - ".direnv/*.dart"
+    - "current/**/*.dart"
+    - "current/*/*.dart"
     - "fastlane"
     - "test_driver/**"
-    - "lib/sdk/**/model/*.dart"
-    - "lib/service/sql/*.g.dart"
-    - "lib/sdk/*/model/*.dart"
-    - "lib/sdk/**/api/*_api.dart"
-    - "lib/sdk/*/api/*_api.dart"
-    - "lib/sdk/contact_v2/contact_v2.dart"
-    - "lib/sdk/fact_schemas/fact_schemas.dart"
-    - "lib/sdk/facts/facts.dart"
-    - "lib/sdk/scheduling/scheduling.dart"
-    - "lib/sdk/smart_dates/smart_dates.dart"
-    - "lib/sdk/sunny/sunny.dart"
-    - "lib/sdk/truman/truman.dart"
-    - "lib/sdk/waypoints/waypoints.dart"
   strong-mode:
     implicit-casts: false
-  enable-experiment:
-    - extension-methods
+
   errors:
+    throw_in_finally: warning
+    annotate_overrides: warning
+    library_names: warning
     # treat missing required parameters as a warning (not a hint)
     missing_required_param: warning
+
     # treat missing returns as a warning (not a hint)
     missing_return: warning
     # allow having TODOs in the code
     todo: ignore
+    prefer_single_quotes: ignore
     # Ignore analyzer hints for updating pubspecs when using Future or
     # Stream and not importing dart:async
     # Please see https://github.com/flutter/flutter/pull/24528 for details.
     sdk_version_async_exported_from_core: ignore
-
+    unnecessary_this: ignore
+    use_function_type_syntax_for_parameters: ignore
+    omit_local_variable_types: ignore
+    use_to_and_as_if_applicable: warning
+    always_declare_return_types: warning
 linter:
   rules:
     # these rules are documented on and in the same order as
@@ -193,3 +187,8 @@ linter:
     # - use_to_and_as_if_applicable # has false positives, so we prefer to catch this by code-review
     - valid_regexps
     # - void_checks # not yet tested
+    - use_to_and_as_if_applicable
+    - prefer_const_constructors_in_immutables
+    - unnecessary_new
+    - annotate_overrides
+    - always_declare_return_types
