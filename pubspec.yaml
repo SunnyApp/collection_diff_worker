@@ -1,29 +1,25 @@
 name: collection_diff_worker
-description: An extension of the collection_diff library that allows the diffs to be performed asynchronously without blocking the main UI thread
-version: 0.4.5
-publish_to: none
+version: 0.4.5+1
 homepage: https://github.com/SunnyApp/collection_diff_worker
-
-environment:
+publish_to: none
+description: An extension of the collection_diff library that allows the diffs to be performed asynchronously without blocking the main UI thread
+environment: 
   sdk: '>=2.10.0 <3.0.0'
-
-dependencies:
+dependencies: 
   collection: ^1.14.13
   collection_diff: ^1.0.3
-  flutter:
-    sdk: flutter
   logging: ^0.11.4
   logging_config: ^0.4.7
   pedantic: ^1.9.2
   uuid: ^2.2.2
   worker_service: any
-
-dev_dependencies:
-  flutter_test:
+  flutter: 
     sdk: flutter
-
-dependency_overrides:
-  collection_diff:
+dev_dependencies: 
+  flutter_test: 
+    sdk: flutter
+dependency_overrides: 
+  collection_diff: 
     path: ../collection_diff
-  worker_service:
+  worker_service: 
     path: ../worker_service
