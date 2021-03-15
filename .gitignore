@@ -30,6 +30,7 @@
 .pub/
 build/
 fastlane/report.xml
+.release-notes
 
 # Android related
 **/android/**/gradle-wrapper.jar
