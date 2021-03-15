@@ -18,8 +18,3 @@ dependencies:
 dev_dependencies: 
   flutter_test: 
     sdk: flutter
-dependency_overrides: 
-  dartxx: 
-    path: ../dartxx
-  collection_diff: 
-    path: ../collection_diff
