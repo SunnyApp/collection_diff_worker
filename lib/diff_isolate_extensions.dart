@@ -58,7 +58,7 @@ extension ListDiffAsyncExtensions<E> on List<E> {
 
 Future<O> _runAsync<I, O>(O fn(I input), I input, {String? name}) {
   _log.finer("Isolate input: ${input?.runtimeType} $input");
-  return Future.sync(() => diffRunner!.run(fn, input, name: name));
+  return Future.sync(() => diffRunner.run(fn, input, name: name));
 }
 
 extension SetDiffAsyncExtensions<E> on Set<E> {

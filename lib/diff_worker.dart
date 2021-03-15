@@ -1,13 +1,14 @@
+import 'package:isolates/runner_factory.dart';
 import 'package:worker_service/worker_service.dart';
 
 RunnerService? _diffRunner;
 
-RunnerService? get diffRunner {
+RunnerService get diffRunner {
   return _diffRunner ??= initializeDiffRunner((config) => config
     ..poolSize = 5
     ..defaultTimeout = Duration(seconds: 60)
     ..failOnError = false
-    ..autoclose = true
+    ..autoCloseChildren = true
     ..debugName = "diffRunner");
 }
 
@@ -18,7 +19,7 @@ set diffRunner(RunnerService? runner) {
   _diffRunner = runner;
 }
 
-RunnerService? initializeDiffRunner(void config(RunnerBuilder builder)) {
+RunnerService initializeDiffRunner(void config(RunnerBuilder builder)) {
   diffRunner = RunnerFactory.global.create(config);
-  return _diffRunner;
+  return _diffRunner!;
 }
