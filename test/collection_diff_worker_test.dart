@@ -15,7 +15,7 @@ void main() {
       final list1 = [1, 2, 3, 4, 6, 7];
       final list2 = [1, 2, 3, 4, 5, 6, 7];
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(1));
       final result = diff.first;
       expect(result is InsertDiff, isTrue);
@@ -26,7 +26,7 @@ void main() {
       final list1 = [1, 2, 3, 4, 5, 6, 7];
       final list2 = [1, 2, 3, 4, 6, 7];
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(1));
       expect(diff, hasDelete((delete) => delete.index == 4));
     });
@@ -35,7 +35,7 @@ void main() {
       final list1 = [1, 2, 3, 4, 6, 7];
       final list2 = [1, 2, 3, 4, 5, 6];
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(2));
       expect(diff, hasDelete((delete) => delete.index == 5));
       expect(
@@ -46,7 +46,7 @@ void main() {
       final list1 = [1, 2, 3, 4, 5, 6];
       final list2 = [1, 2, 3, 4, 6, 7];
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff[0], isA<InsertDiff>());
       expect(diff[1], isA<DeleteDiff>());
       expect(diff,
@@ -62,7 +62,7 @@ void main() {
       ]);
 
       final list2 = [list1[0], list1[1].rename("The Binary"), list1[2]];
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(1));
     });
 
@@ -77,7 +77,7 @@ void main() {
 
       final list2 = [...list1]..[2] = list1[2].rename("Dick");
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(1));
       expect(diff, hasReplace((replace) => replace.index == 2));
     });
@@ -92,7 +92,7 @@ void main() {
 
       final list2 = [list1[0].rename("Robert"), list1[1], list1[2], list1[3]];
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(1));
       expect(diff, hasReplace((replace) => replace.index == 0));
     });
@@ -114,7 +114,7 @@ void main() {
         ..insert(8, list1[2])
         ..removeAt(2);
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(2));
       expect(diff, hasDelete((move) => move.delete.index == 2));
       expect(diff, hasInsert((move) => move.insert.index == 8));
@@ -135,7 +135,7 @@ void main() {
 
       final list2 = [...list1]..move(7, 2);
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
 
       expect(diff.length, equals(2));
       expect(diff, hasDelete((move) => move.index == 7));
@@ -156,7 +156,7 @@ void main() {
       ]);
 
       final list2 = [...list1]..move(7, 3)..move(8, 2);
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
 
       expect(diff.length, equals(3));
       expect(
@@ -178,7 +178,7 @@ void main() {
         "Donald"
       ]);
       final list2 = [...list1]..insert(0, Renamable("Kevin"));
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(1));
       expect(diff, hasInsert((insert) => insert.index == 0));
     });
@@ -198,7 +198,7 @@ void main() {
 
       final list2 = [...list1]..insert(4, Renamable("Kevin"));
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
 
       expect(diff.length, equals(1));
       expect(diff, hasInsert((insert) => insert.index == 4));
@@ -211,7 +211,7 @@ void main() {
       final list2 = [...list1]..insert(100, Renamable("Kevin"));
 
       final start = DateTime.now();
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       final duration = start.difference(DateTime.now());
       print("Duration: $duration");
       expect(duration.inMicroseconds, lessThan(1000));
@@ -235,7 +235,7 @@ void main() {
       final list2 = [...list1];
       list2.removeAt(0);
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
 
       expect(diff.length, equals(1));
       expect(diff, hasDelete((delete) => delete.index == 0));
@@ -257,7 +257,7 @@ void main() {
       final list2 = [...list1];
       list2.removeAt(4);
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(1));
       expect(diff, hasDelete((delete) => delete.index == 4));
     });
@@ -267,7 +267,7 @@ void main() {
           generateFromNames(["Captain America", "Captain Marvel", "Thor"]);
       final list2 = [...list1]..[1] = list1[1].rename("The Binary");
 
-      final diff = await list1.differencesAsync(list2);
+      final diff = await (list1.differencesAsync(list2));
       expect(diff.length, equals(1));
       expect(diff, hasReplace((replace) => replace.index == 1));
     });
@@ -290,7 +290,8 @@ void main() {
       final diff = set1.differences(set2);
 
       expect(diff.length, equals(1));
-      expect(diff, hasRemove((remove) => remove.items.first.id == "1"));
+      expect(
+          diff, hasRemove<Renamable>((remove) => remove.items.first.id == "1"));
     });
 
     test("Set diff - remove all", () async {
@@ -391,7 +392,7 @@ void main() {
       final list2 = [...list1]..removeAt(1);
 
       /// No errors when running the diff (ensures a defensive copy was made)
-      final result = await list1.differencesAsync(list2);
+      final result = await (list1.differencesAsync(list2));
       expect(result.args.id, endsWith("delegate"));
       expect(
           result, hasDelete((delete) => delete.index == 1 && delete.size == 1));
@@ -517,7 +518,7 @@ class _ChangeMatcher<D extends ListDiff> extends Matcher {
   @override
   bool matches(final item, Map matchState) {
     if (item is ListDiffs) {
-      return item.any((final x) => x is D && (changeMatch?.call(x) ?? true));
+      return item.any((final x) => x is D && (changeMatch.call(x)));
     }
     return false;
   }
@@ -535,7 +536,7 @@ class _SetDiffMatcher<E> extends Matcher {
   @override
   bool matches(final item, Map matchState) {
     if (item is SetDiffs<E>) {
-      return item.any((final x) => (changeMatch?.call(x) ?? true));
+      return item.any((final x) => (changeMatch.call(x)));
     }
     return false;
   }
@@ -558,7 +559,7 @@ extension ListExtTest<X> on List<X> {
 }
 
 class IllegalMap<K, V> extends DelegatingMap<K, V> {
-  IllegalMap([Map<K, V> input]) : super(input ?? <K, V>{});
+  IllegalMap([Map<K, V>? input]) : super(input ?? <K, V>{});
 
   static Noop nooper = (_) => "Stars";
 

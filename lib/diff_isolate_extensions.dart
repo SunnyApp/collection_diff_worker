@@ -3,6 +3,7 @@ import 'package:collection_diff/collection_diff.dart';
 import 'package:collection_diff/diff_algorithm.dart';
 import 'package:collection_diff/list_diff_model.dart';
 import 'package:collection_diff/map_diff.dart';
+import 'package:dartxx/dartxx.dart';
 import 'package:logging/logging.dart';
 import 'package:worker_service/worker_service.dart';
 
@@ -14,9 +15,10 @@ int i = 0;
 
 extension ListDiffAsyncExtensions<E> on List<E> {
   Future<ListDiffs<E>> differencesAsync(List<E> other,
-      {String debugName,
-      DiffEquality equality,
-      ListDiffAlgorithm algorithm}) async {
+      {String? debugName,
+      DiffEquality? equality,
+      ListDiffAlgorithm? algorithm}) async {
+    equality ??= DiffEquality.diffable();
     try {
       algorithm ??= const MyersDiff();
       final originalArgs = ListDiffArguments<E>.copied(this, other, equality);
@@ -32,9 +34,7 @@ extension ListDiffAsyncExtensions<E> on List<E> {
         final context = ListDiffContext<DiffDelegate>(algorithm, arguments,
             debugName: "$debugName (delegate)");
         final diff = await _runAsync(executeListDiff, context, name: name);
-        if (diff == null) {
-          return ListDiffs<E>.empty();
-        }
+
         final undelegated = diff.undelegate<E>(originalArgs);
         return undelegated;
       } else {
@@ -56,17 +56,17 @@ extension ListDiffAsyncExtensions<E> on List<E> {
   }
 }
 
-Future<O> _runAsync<I, O>(O fn(I input), I input, {String name}) {
+Future<O> _runAsync<I, O>(O fn(I input), I input, {String? name}) {
   _log.finer("Isolate input: ${input?.runtimeType} $input");
-  return Future.sync(() => diffRunner.run(fn, input, name: name));
+  return Future.sync(() => diffRunner!.run(fn, input, name: name));
 }
 
 extension SetDiffAsyncExtensions<E> on Set<E> {
   Future<SetDiffs<E>> differencesAsync(Set<E> other,
       {bool checkEquality = true,
-      String debugName,
-      DiffEquality equality,
-      SetDiffAlgorithm algorithm}) async {
+      String? debugName,
+      required DiffEquality equality,
+      SetDiffAlgorithm? algorithm}) async {
     try {
       algorithm ??= const DefaultSetDiffAlgorithm();
       final arguments =
@@ -100,15 +100,15 @@ extension MapDiffAsyncExtensions<K, V> on Map<K, V> {
   Future<MapDiffs<K, V>> differencesAsync(
     Map<K, V> other, {
     bool checkValues = true,
-    String debugName,
-    DiffEquality keyEquality,
-    DiffEquality valueEquality,
-    MapDiffAlgorithm algorithm,
+    String? debugName,
+    DiffEquality? keyEquality,
+    DiffEquality? valueEquality,
+    MapDiffAlgorithm? algorithm,
   }) async {
     try {
       algorithm ??= const DefaultMapDiffAlgorithm();
       final args = MapDiffArguments<K, V>.copied(this, other,
-          checkValues: checkValues ?? true,
+          checkValues: checkValues,
           keyEquality: keyEquality,
           valueEquality: valueEquality);
       final context =
@@ -148,20 +148,20 @@ extension MapDiffAsyncExtensions<K, V> on Map<K, V> {
 
 extension IterableDiffAsyncExtensions<E> on Iterable<E> {
   Future<SetDiffs<E>> differencesAsSetAsync(Iterable<E> other,
-      {String debugName,
-      DiffEquality equality,
-      SetDiffAlgorithm algorithm}) async {
+      {String? debugName,
+      required DiffEquality equality,
+      SetDiffAlgorithm? algorithm}) async {
     final asSet = this.toSet();
-    return await asSet.differencesAsync(other.toSet(),
-        debugName: debugName, equality: equality, algorithm: algorithm);
+    return await (asSet.differencesAsync(other.toSet(),
+        debugName: debugName, equality: equality, algorithm: algorithm));
   }
 
   Future<ListDiffs<E>> differencesAsListAsync(Iterable<E> other,
-      {String debugName,
-      DiffEquality equality,
-      ListDiffAlgorithm algorithm}) async {
-    return await this.toList().differencesAsync(other.toList(),
-        debugName: debugName, equality: equality, algorithm: algorithm);
+      {String? debugName,
+      required DiffEquality equality,
+      ListDiffAlgorithm? algorithm}) async {
+    return await (this.toList().differencesAsync(other.toList(),
+        debugName: debugName, equality: equality, algorithm: algorithm));
   }
 }
 
@@ -172,9 +172,9 @@ extension ListDiffsExtensions on ListDiffs {
           if (op is DeleteDiff) {
             return DeleteDiff<E>(args, op.index, op.size);
           } else if (op is InsertDiff) {
-            return InsertDiff<E>(args, op.index, op.size, op.items.cast<E>());
+            return InsertDiff<E>(args, op.index!, op.size, op.items.cast<E>());
           } else if (op is ReplaceDiff) {
-            return ReplaceDiff<E>(args, op.index, op.size, op.items.cast<E>());
+            return ReplaceDiff<E>(args, op.index!, op.size, op.items.cast<E>());
           } else {
             throw "Unknown type";
           }
@@ -186,18 +186,11 @@ extension ListDiffsExtensions on ListDiffs {
   /// passed a safe delegate.  When the method returns, we need to rehydrate the results by looking the delegates up
   /// in a map.
   ListDiffs<E> undelegate<E>(ListDiffArguments<E> args) {
-    if (this == null) {
-      _log.warning("Got a null listDiffs<$E>");
-      return ListDiffs.empty(args);
-    }
     final delegateArgs = args as ListDiffArguments<DiffDelegate>;
     // Create a mapping of diffKey to replacement
     final reverseMapping = Map.fromEntries(
         delegateArgs.replacement.map((d) => MapEntry(d.diffKey, d as E)));
 
-    if (this.operations == null) {
-      throw "BAD BAD $args";
-    }
     return ListDiffs<E>.ofOperations(
         this.operations.map((final op) {
           if (op is DeleteDiff) {
@@ -205,21 +198,22 @@ extension ListDiffsExtensions on ListDiffs {
           } else if (op is InsertDiff) {
             return InsertDiff<E>(
                 args,
-                op.index,
+                op.index!,
                 op.size,
                 op.items
                     .map((delegate) => reverseMapping[delegate.diffKey])
-                    .toList());
+                    .notNull());
           } else if (op is ReplaceDiff) {
             return ReplaceDiff<E>(
                 args,
-                op.index,
+                op.index!,
                 op.size,
                 op.items
                     .map((delegate) => reverseMapping[delegate.diffKey])
+                    .notNull()
                     .toList());
           } else {
-            throw "Unknown type";
+            throw Exception("Unknown type");
           }
         }).toList(growable: false),
         args.withId(this.args.id));
@@ -245,34 +239,36 @@ extension SetDiffsExtensions on SetDiffs {
         delegateArgs.replacement.map((d) => MapEntry(d.diffKey, d as E)));
 
     return SetDiffs<E>.ofOperations(
-      operations.map((final op) {
+      operations.map<SetDiff<E>>((final op) {
         switch (op.type) {
           case SetDiffType.update:
             final opCast = (op as UpdateDiff<DiffDelegate>);
             return UpdateDiff(
               args,
-              reverseMapping[opCast.oldValue.diffKey],
-              reverseMapping[opCast.newValue.diffKey],
+              reverseMapping[opCast.oldValue.diffKey]!,
+              reverseMapping[opCast.newValue.diffKey]!,
             );
           case SetDiffType.remove:
             return SetDiff.remove(
                 args,
-                op.items.map((delegate) {
-                  return reverseMapping[delegate.diffKey];
-                }).toSet());
+                op.items
+                    .map((delegate) => reverseMapping[delegate.diffKey])
+                    .notNullSet());
 
           case SetDiffType.add:
             return SetDiff.add(
                 args,
                 op.items.map((delegate) {
                   return reverseMapping[delegate.diffKey];
-                }).toSet());
-            break;
+                }).notNullSet());
           default:
             throw "Invalid type";
         }
       }).toList(growable: false),
-      replacement.map((delegate) => reverseMapping[delegate.diffKey]).toSet(),
+      replacement
+          .map((delegate) => reverseMapping[delegate.diffKey])
+          .notNull()
+          .toSet(),
       args,
     );
   }
@@ -302,14 +298,14 @@ extension MapDiffsExtension<K, V> on MapDiffs<K, V> {
             return MapDiff<K, E>.change(
                 args,
                 op.key,
-                reverseMapping[op.oldValue.diffKey],
-                reverseMapping[op.value.diffKey]);
+                reverseMapping[op.oldValue!.diffKey],
+                reverseMapping[op.value!.diffKey]);
           case MapDiffType.unset:
             return MapDiff<K, E>.unset(
-                args, op.key, reverseMapping[op.oldValue.diffKey]);
+                args, op.key, reverseMapping[op.oldValue!.diffKey]);
           case MapDiffType.set:
             return MapDiff<K, E>.set(
-                args, op.key, reverseMapping[op.value.diffKey]);
+                args, op.key, reverseMapping[op.value!.diffKey]);
           default:
             throw "Invalid type";
         }
@@ -322,7 +318,7 @@ extension MapDiffsExtension<K, V> on MapDiffs<K, V> {
 class ListDiffContext<E> {
   final ListDiffAlgorithm algorithm;
   final ListDiffArguments<E> arguments;
-  final String debugName;
+  final String? debugName;
 
   ListDiffContext(this.algorithm, this.arguments, {this.debugName});
 
@@ -342,7 +338,7 @@ class ListDiffContext<E> {
 class SetDiffContext<E> {
   final SetDiffAlgorithm algorithm;
   final SetDiffArguments<E> arguments;
-  final String debugName;
+  final String? debugName;
 
   String get id => arguments.id;
 
@@ -360,7 +356,7 @@ class SetDiffContext<E> {
 }
 
 class MapDiffContext<K, V> {
-  final String debugName;
+  final String? debugName;
   final MapDiffAlgorithm algorithm;
   final MapDiffArguments<K, V> arguments;
   final bool isTimed;
@@ -423,7 +419,7 @@ SetDiffs<E> executeSetDiff<E>(SetDiffContext<E> context) {
   }
 }
 
-_logResult(String type, String name, int origLength, int replLength,
+_logResult(String type, String? name, int origLength, int replLength,
     int resultLength, DateTime start) {
   _log.info({
     currentIsolateName: "$type[${name ?? "-"}]",
@@ -446,14 +442,14 @@ _logResult(String type, String name, int origLength, int replLength,
 
 extension _EntryDiffExtensions<K, V> on Iterable<MapEntry<K, V>> {
   Map<K, V> toMap() {
-    return Map.fromEntries(this ?? []);
+    return Map.fromEntries(this);
   }
 }
 
 extension _MapDiffExtensions<K, V> on Map<K, V> {
   Map<K, V> whereValuesNotNull() {
     return <K, V>{
-      ...?this.entries.where((e) => e.value != null).toMap(),
+      ...this.entries.where((e) => e.value != null).toMap(),
     };
   }
 }
