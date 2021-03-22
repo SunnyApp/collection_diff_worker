@@ -1,3 +1,6 @@
+## [0.5.5+7]
+ * Updating worker_service
+
 ## [0.5.5+6]
  * Bump dartxx
 
