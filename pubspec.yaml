@@ -7,7 +7,7 @@ environment:
 dependencies: 
   collection: ^1.15.0
   collection_diff: ^2.0.3+3
-  dartxx: ^0.4.4+5
+  dartxx: ^0.4.5-nullsafety.6
   logging: ^1.0.0
   pedantic: ^1.11.0
   uuid: ^3.0.1

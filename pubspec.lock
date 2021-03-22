@@ -53,10 +53,10 @@ packages:
   collection_diff:
     dependency: "direct main"
     description:
-      path: "../collection_diff"
-      relative: true
-    source: path
-    version: "2.0.3+3"
+      name: collection_diff
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3+5"
   crypto:
     dependency: transitive
     description:
@@ -67,10 +67,10 @@ packages:
   dartxx:
     dependency: "direct main"
     description:
-      path: "../dartxx"
-      relative: true
-    source: path
-    version: "0.4.4+5"
+      name: dartxx
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.5-nullsafety.6"
   equatable:
     dependency: transitive
     description:

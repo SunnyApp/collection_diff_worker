@@ -118,10 +118,10 @@ extension MapDiffAsyncExtensions<K, V> on Map<K, V> {
       if (this is Map<K, DiffDelegate>) {
         final delegateArgs = MapDiffArguments<K, DiffDelegate>.copied(
           this
-              .whereValuesNotNull()
+              .valuesNotNull()
               .map((k, s) => MapEntry(k, (s as DiffDelegate).delegate)),
           other
-              .whereValuesNotNull()
+              .valuesNotNull()
               .map((k, s) => MapEntry(k, (s as DiffDelegate).delegate)),
           checkValues: checkValues,
           keyEquality: keyEquality,
@@ -202,7 +202,7 @@ extension ListDiffsExtensions on ListDiffs {
                 op.size,
                 op.items
                     .map((delegate) => reverseMapping[delegate.diffKey])
-                    .notNull());
+                    .notNullList());
           } else if (op is ReplaceDiff) {
             return ReplaceDiff<E>(
                 args,
@@ -439,17 +439,3 @@ _logResult(String type, String? name, int origLength, int replLength,
 //    return debugName == "main";
 //  }
 //}
-
-extension _EntryDiffExtensions<K, V> on Iterable<MapEntry<K, V>> {
-  Map<K, V> toMap() {
-    return Map.fromEntries(this);
-  }
-}
-
-extension _MapDiffExtensions<K, V> on Map<K, V> {
-  Map<K, V> whereValuesNotNull() {
-    return <K, V>{
-      ...this.entries.where((e) => e.value != null).toMap(),
-    };
-  }
-}
