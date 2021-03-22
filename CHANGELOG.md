@@ -1,3 +1,6 @@
+## [0.5.5+6]
+ * Bump dartxx
+
 ## [0.5.5+5]
  * Updated gemfile
 Updating dartxx

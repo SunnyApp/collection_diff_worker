@@ -1,5 +1,5 @@
 name: collection_diff_worker
-version: 0.5.5+5
+version: 0.5.5+6
 homepage: https://github.com/SunnyApp/collection_diff_worker
 description: An extension of the collection_diff library that allows the diffs to be performed asynchronously without blocking the main UI thread
 environment: 
