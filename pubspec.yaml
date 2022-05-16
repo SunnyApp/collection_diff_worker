@@ -5,14 +5,17 @@ description: An extension of the collection_diff library that allows the diffs t
 environment: 
   sdk: '>=2.12.0 <3.0.0'
 dependencies: 
-  collection: ^1.15.0
-  collection_diff: ^2.0.3+6
-  dartxx: ^0.5.0+2
-  logging: ^1.0.0
-  pedantic: ^1.11.0
+  collection: ^1.16.0
+  logging: ^1.0.2
+  pedantic: ^1.11.1
   uuid: ^3.0.2
-  worker_service: ^0.7.2+13
   isolates: ^3.0.3+8
+  collection_diff: 
+    path: /Users/ericm/sunny/player_rank/packages/collection_diff
+  dartxx: 
+    path: /Users/ericm/sunny/player_rank/packages/dartxx
+  worker_service: 
+    path: /Users/ericm/sunny/player_rank/packages/worker_service
   flutter: 
     sdk: flutter
 dev_dependencies: 
