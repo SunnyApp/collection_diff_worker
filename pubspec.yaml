@@ -8,14 +8,15 @@ dependencies:
   collection: ^1.16.0
   logging: ^1.0.2
   pedantic: ^1.11.1
-  uuid: ^3.0.2
-  isolates: ^3.0.3+8
+  uuid: ^3.0.6
+  isolates: 
+    path: /Users/ericm/sunny/trippi_plugins/isolate
   collection_diff: 
-    path: /Users/ericm/sunny/player_rank/packages/collection_diff
+    path: /Users/ericm/sunny/trippi_plugins/collection_diff
   dartxx: 
-    path: /Users/ericm/sunny/player_rank/packages/dartxx
+    path: /Users/ericm/sunny/trippi_plugins/dartxx
   worker_service: 
-    path: /Users/ericm/sunny/player_rank/packages/worker_service
+    path: /Users/ericm/sunny/trippi_plugins/worker_service
   flutter: 
     sdk: flutter
 dev_dependencies: 
