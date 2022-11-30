@@ -10,13 +10,21 @@ dependencies:
   pedantic: ^1.11.1
   uuid: ^3.0.6
   isolates: 
-    path: /Users/ericm/sunny/trippi_plugins/isolate
+    git: 
+      url: git@github.com:SunnyApp/isolate.git
+      ref: trippi_app
   collection_diff: 
-    path: /Users/ericm/sunny/trippi_plugins/collection_diff
+    git: 
+      url: git@github.com:SunnyApp/collection_diff
+      ref: trippi_app
   dartxx: 
-    path: /Users/ericm/sunny/trippi_plugins/dartxx
+    git: 
+      url: git@github.com:ericmartineau/dartxx.git
+      ref: trippi_app
   worker_service: 
-    path: /Users/ericm/sunny/trippi_plugins/worker_service
+    git: 
+      url: git@github.com:SunnyApp/worker_service
+      ref: trippi_app
   flutter: 
     sdk: flutter
 dev_dependencies: 
