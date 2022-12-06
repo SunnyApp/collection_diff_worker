@@ -8,8 +8,9 @@ dependencies:
   collection: ^1.16.0
   logging: ^1.0.2
   pedantic: ^1.11.1
-  uuid: ^3.0.2
-  isolates: ^3.0.3+8
+  uuid: ^3.0.6
+  isolates: 
+    path: /Users/ericm/reliveit/checkout/SunnyApp/isolate
   collection_diff: 
     path: /Users/ericm/sunny/player_rank/packages/collection_diff
   dartxx: 
