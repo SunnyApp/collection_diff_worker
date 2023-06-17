@@ -5,18 +5,18 @@ description: An extension of the collection_diff library that allows the diffs t
 environment: 
   sdk: '>=2.12.0 <3.0.0'
 dependencies: 
-  collection: ^1.17.1
-  logging: ^1.1.1
+  collection: ^1.17.2
+  logging: 1.2.0
   pedantic: ^1.11.1
-  uuid: ^3.0.0
+  uuid: ^3.0.7
   isolates: 
-    path: /Users/ericm/reliveit/checkout/SunnyApp/isolate
+    path: /Users/ericm/aesthetika/checkout/SunnyApp/isolate
   collection_diff: 
-    path: /Users/ericm/reliveit/checkout/SunnyApp/collection_diff
+    path: /Users/ericm/aesthetika/checkout/SunnyApp/collection_diff
   dartxx: 
-    path: /Users/ericm/reliveit/checkout/ericmartineau/dartxx
+    path: /Users/ericm/aesthetika/checkout/ericmartineau/dartxx
   worker_service: 
-    path: /Users/ericm/reliveit/checkout/SunnyApp/worker_service
+    path: /Users/ericm/aesthetika/checkout/SunnyApp/worker_service
   flutter: 
     sdk: flutter
 dev_dependencies: 
